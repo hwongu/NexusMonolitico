@@ -1,0 +1,20 @@
+
+<form class="login-form" #loginForm="ngForm" (submit)="login()">
+  <div class="background"></div>
+  <mat-card class="login-card">
+    <mat-card-header>
+      <mat-card-title class="app-title">Bienvenido al Sistema Nexus</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-form-field class="full-width">
+        <input matInput placeholder="Usuario" name="txtUsuario" [(ngModel)]="username" required>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <input matInput type="password" placeholder="Clave" name="txtClave" [(ngModel)]="password" required>
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit" name="btnIniciarSesion" [disabled]="!loginForm.valid">Login</button>
+    </mat-card-actions>
+  </mat-card>
+</form>

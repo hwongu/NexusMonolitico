@@ -1,0 +1,28 @@
+.example-container {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.example-sidenav-container {
+    flex: 1;
+}
+
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+.active {
+    background-color: var(--color-primary-light);
+}
+
+.myButton:focus {
+    box-shadow: 0 0 0 rgba(255, 255, 255, 1) !important;
+    transition: none !important;
+    background-color: var(--color-surface-highlight) !important;
+    -webkit-tap-highlight-color: var(--color-surface-highlight) !important;
+}
