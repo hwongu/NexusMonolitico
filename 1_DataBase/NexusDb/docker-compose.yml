@@ -1,0 +1,38 @@
+# ==============================================================================
+# Archivo: docker-compose.yml
+# Autor: Henry Wong
+# Correo: hwongu@gmail.com
+# Descripción: 
+# Este archivo define la infraestructura como código necesaria para levantar 
+# nuestra base de datos PostgreSQL 18. Aquí configuro un contenedor efímero 
+# que auto-ejecuta mi script de inicialización (init.sql) y expone el puerto 
+# para mi máquina local. Aprovecho el soporte UTF-8 nativo del contenedor para 
+# guardar caracteres en español.
+# ==============================================================================
+
+services:
+  postgres-nexus:
+    # Utilizo la imagen oficial de PostgreSQL en su versión 18 para este proyecto.
+    image: postgres:18
+    
+    # Le asigno este nombre personalizado para identificar fácilmente mi contenedor en Docker Desktop.
+    container_name: servidor_nexus_db
+    
+    environment:
+      # Aquí defino mis credenciales de acceso y el nombre de la base de datos principal.
+      POSTGRES_USER: admin_nexus
+      POSTGRES_PASSWORD: admin_password_123
+      POSTGRES_DB: nexus_db
+      
+      # Solución que aplico para versiones 18+: Obligo al contenedor a guardar los datos en una subcarpeta para evitar errores de compatibilidad.
+      PGDATA: /var/lib/postgresql/data/pgdata
+      
+    ports:
+      # Hago un mapeo de puertos. Expongo el puerto interno 5432 hacia el puerto 5433 
+      # de mi computadora local para evitar conflictos con otras instalaciones que pueda tener.
+      - "5433:5432"
+      
+    volumes:
+      # Inyecto mi script local (init.sql) directamente en la carpeta de auto-inicialización del contenedor.
+      # Todo lo que he estructurado ahí se ejecutará automáticamente la primera vez que levante la base de datos.
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql

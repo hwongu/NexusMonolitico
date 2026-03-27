@@ -1,0 +1,33 @@
+
+<div class="container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{ isEditMode ? 'Editar Categoría' : 'Nueva Categoría' }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div *ngIf="message" class="alert alert-info">{{ message }}</div>
+
+      <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="fill" style="width: 100%;">
+          <mat-label>ID</mat-label>
+          <input matInput formControlName="idCategoria">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" style="width: 100%;">
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="nombre">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" style="width: 100%;">
+          <mat-label>Descripción</mat-label>
+          <textarea matInput formControlName="descripcion"></textarea>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="!categoryForm.valid || submitted">
+          {{ isEditMode ? 'Actualizar' : 'Registrar' }}
+        </button>
+        <button mat-button type="button" (click)="goBack()" class="ms-2">Volver</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,0 +1,88 @@
+/* You can add global styles to this file, and also import other style files */
+@import "@angular/material/prebuilt-themes/indigo-pink.css";
+
+:root {
+  --color-primary: #FF5117;
+  --color-primary-hover: #E6460F;
+  --color-primary-light: #FFE4DA;
+  --color-accent: #FF6B38;
+  --color-warn: #D32F2F;
+  --color-text-on-primary: #FFFFFF;
+  --color-link-muted: #8B4A35;
+  --color-link-hover: #B83D10;
+  --color-surface-highlight: #FFF2EC;
+  --color-focus-ring: rgba(255, 81, 23, 0.2);
+}
+
+html, body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+.mat-toolbar.mat-primary,
+.mat-mdc-toolbar.mat-primary {
+  background-color: var(--color-primary);
+  color: var(--color-text-on-primary);
+}
+
+.mat-mdc-raised-button.mat-primary,
+.mat-mdc-unelevated-button.mat-primary {
+  --mdc-protected-button-container-color: var(--color-primary);
+  --mdc-protected-button-label-text-color: var(--color-text-on-primary);
+  --mdc-filled-button-container-color: var(--color-primary);
+  --mdc-filled-button-label-text-color: var(--color-text-on-primary);
+}
+
+.mat-mdc-raised-button.mat-primary:hover,
+.mat-mdc-unelevated-button.mat-primary:hover,
+.mat-mdc-fab.mat-primary:hover,
+.mat-mdc-mini-fab.mat-primary:hover {
+  filter: brightness(0.94);
+}
+
+.mat-mdc-fab.mat-primary,
+.mat-mdc-mini-fab.mat-primary {
+  --mdc-fab-container-color: var(--color-primary);
+  --mdc-fab-icon-color: var(--color-text-on-primary);
+  --mat-fab-foreground-color: var(--color-text-on-primary);
+  background-color: var(--color-primary);
+  color: var(--color-text-on-primary);
+}
+
+.mat-mdc-icon-button.mat-primary,
+.mat-mdc-icon-button.mat-accent {
+  color: var(--color-primary);
+}
+
+.mat-toolbar.mat-primary .mat-icon,
+.mat-mdc-toolbar.mat-primary .mat-icon,
+.mat-mdc-fab.mat-primary .mat-icon,
+.mat-mdc-mini-fab.mat-primary .mat-icon {
+  color: var(--color-text-on-primary);
+}
+
+.mat-mdc-form-field {
+  --mdc-filled-text-field-caret-color: var(--color-primary);
+  --mdc-filled-text-field-focus-active-indicator-color: var(--color-primary);
+  --mdc-filled-text-field-focus-label-text-color: var(--color-primary);
+  --mdc-outlined-text-field-caret-color: var(--color-primary);
+  --mdc-outlined-text-field-focus-outline-color: var(--color-primary);
+  --mdc-outlined-text-field-focus-label-text-color: var(--color-primary);
+  --mat-form-field-focus-select-arrow-color: var(--color-primary);
+}
+
+.mat-mdc-form-field.mat-focused .mat-mdc-select-arrow,
+.mat-mdc-form-field.mat-focused .mat-mdc-floating-label {
+  color: var(--color-primary);
+}
+
+.mat-mdc-paginator .mat-mdc-icon-button.mat-mdc-button-base {
+  color: var(--color-primary);
+}
+
+.mat-mdc-menu-item .mat-icon {
+  color: inherit;
+}

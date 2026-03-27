@@ -1,0 +1,30 @@
+.welcome-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #fafafa;
+  }
+  
+  mat-card {
+    width: 450px;
+    padding: 20px;
+  }
+  
+  mat-card-header {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  mat-card-title {
+    font-size: 22px;
+    text-align: center;
+    width: 100%; 
+    margin-bottom: 20px;
+  }
+  
+  mat-card-content p {
+    text-align: justify;
+    margin-bottom: 20px;
+  }

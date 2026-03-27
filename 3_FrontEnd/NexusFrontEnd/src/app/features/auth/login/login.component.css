@@ -1,0 +1,65 @@
+.login-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    position: relative;
+  }
+  
+    
+  .login-card {
+    max-width: 400px;
+    width: 100%;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .mat-card-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .full-width {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  mat-form-field {
+    width: 100%;
+  }
+  
+  mat-card-actions {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  button {
+    margin-left: 10px;
+  }
+
+  .app-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--color-primary);
+    text-align: center; /* Centra el texto */
+    margin-bottom: 20px; /* Espacio inferior */
+  }
+  
+.additional-links {
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  .additional-links a {
+    color: var(--color-link-muted);
+    text-decoration: none;
+  }
+  
+  .additional-links a:hover {
+    color: var(--color-link-hover);
+  }
+  
+  .separator {
+    margin: 0 10px;
+  }

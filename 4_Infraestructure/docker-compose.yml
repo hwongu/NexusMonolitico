@@ -1,0 +1,70 @@
+# ==============================================================================
+# Archivo: docker-compose.yml
+# Autor: Henry Wong (hwongu@gmail.com)
+# Descripción: 
+# Orquestador completo para el sistema Nexus. Integra la base de datos PostgreSQL 18
+# con su script de inicialización, el backend Java nativo empaquetado dinámicamente,
+# y el frontend Angular servido a través de Nginx en un sub-path específico.
+# ==============================================================================
+
+services:
+  # ----------------------------------------------------------------------------
+  # Servicio de Base de Datos PostgreSQL 18
+  # ----------------------------------------------------------------------------
+  postgres-nexus:
+    image: postgres:18
+    container_name: servidor_nexus_db
+    environment:
+      POSTGRES_USER: admin_nexus
+      POSTGRES_PASSWORD: admin_password_123
+      POSTGRES_DB: nexus_db
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      # Se expone el puerto 5433 hacia la máquina local para accesos externos
+      - "5433:5432"
+    volumes:
+      # Se inyecta el script de inicialización desde la carpeta 'database'
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  # ----------------------------------------------------------------------------
+  # Servicio Backend Java Nativo
+  # ----------------------------------------------------------------------------
+  backend-nexus:
+    image: eclipse-temurin:21-jre-alpine
+    container_name: servidor_nexus_backend
+    restart: always
+    ports:
+      # Se expone el puerto 9090 hacia la máquina local para evitar conflictos
+      - "9090:8080"
+    volumes:
+      # Se monta la carpeta 'deploy' que contendrá el Fat JAR compilado
+      - ./deploy:/app
+    environment:
+      SERVER_PORT: "8080"
+      SERVER_CONTEXT_PATH: "NexusBE/api"
+      # Conexión interna hacia el servicio de base de datos usando resolución DNS de Docker
+      DB_URL: "jdbc:postgresql://postgres-nexus:5432/nexus_db"
+      DB_USER: "admin_nexus"
+      DB_PASSWORD: "admin_password_123"
+    # Se utiliza un comodín para ejecutar dinámicamente cualquier JAR encontrado en la ruta
+    command: sh -c "java -jar /app/*.jar"
+    depends_on:
+      - postgres-nexus
+
+  # ----------------------------------------------------------------------------
+  # Servicio Frontend Angular (Nginx)
+  # ----------------------------------------------------------------------------
+  frontend-nexus:
+    image: nginx:latest
+    container_name: servidor_nexus_frontend
+    restart: always
+    ports:
+      # Se expone el puerto 80 estándar HTTP
+      - "80:80"
+    volumes:
+      # Se montan los archivos estáticos a la sub-ruta configurada en Angular
+      - ./frontend:/usr/share/nginx/html/NexusFrontEnd
+      # Se inyecta la configuración personalizada de Nginx
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - backend-nexus
