@@ -88,8 +88,22 @@ Preparamos la interfaz de usuario para producción.
 
 ---
 
+## 👤 Autor
 **Autor:** [Henry Wong](https://github.com/hwongu)  
-*Docente Universitario*
+
+---
+
+## 📜 Licencia
+
+Este proyecto está protegido por copyright © 2025 **Henry Wong**.  
+Está permitido su uso únicamente con fines **educativos y académicos** en el marco de cursos universitarios.  
+**Queda prohibido su uso en entornos de producción o con fines comerciales.**
+
+---
+
+## ⚠️ Nota
+
+Este repositorio es un recurso de ejemplo para prácticas en clase. No está optimizado para ambientes reales ni cumple con todas las medidas de seguridad y escalabilidad requeridas en aplicaciones comerciales.
 
 ---
 
