@@ -35,7 +35,7 @@ Contiene los directorios de destino donde se unifican los artefactos compilados 
 
 Para garantizar que el entorno local funcione correctamente, el orden de ejecución es fundamental:
 
-1.  **La Base de Datos manda:** El contenedor de la base de datos es el corazón del sistema. **Siempre debe estar encendido primero** antes de intentar levantar o probar el backend.
+1.  **La Base de Datos manda:** El contenedor de la base de datos debe estar encendido antes de intentar levantar o probar el monolítico individualmente desde tu IDE.
 2.  **Construcción independiente:** Asegúrate de compilar el backend (generando el `.jar`) y el frontend (generando el directorio `dist`) antes de intentar un despliegue completo en la carpeta de infraestructura.
 
 ---
