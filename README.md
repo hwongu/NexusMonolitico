@@ -1,4 +1,4 @@
-# 🚀 Proyecto Nexus – Sistema de Gestión de Almacén (Arquitectura Monolítica)
+# 🧾 Proyecto Nexus – Sistema de Gestión de Almacén (Arquitectura Monolítica)
 
 Este repositorio contiene el código fuente, la configuración de la base de datos y la infraestructura para el sistema **Nexus** en su versión de una **Arquitectura Monolítica**. Este proyecto ha sido diseñado como material educativo y de ejemplo para clases universitarias, demostrando cómo construir una aplicación completa (Full-Stack) utilizando tecnologías puras y estándares de la industria, sin depender inicialmente de frameworks pesados en el backend.
 
