@@ -95,7 +95,7 @@ Preparamos la interfaz de usuario para producción.
 
 ## 📜 Licencia
 
-Este proyecto está protegido por copyright © 2025 **Henry Wong**.  
+Este proyecto está protegido por copyright © 2026 **Henry Wong**.  
 Está permitido su uso únicamente con fines **educativos y académicos** en el marco de cursos universitarios.  
 **Queda prohibido su uso en entornos de producción o con fines comerciales.**
 
