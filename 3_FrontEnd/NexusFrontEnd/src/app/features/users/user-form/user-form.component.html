@@ -1,0 +1,40 @@
+<div class="container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{ isEditMode ? 'Editar Usuario' : 'Nuevo Usuario' }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div *ngIf="message" class="alert alert-info">{{ message }}</div>
+
+      <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="fill" style="width: 100%;">
+          <mat-label>ID</mat-label>
+          <input matInput formControlName="idUsuario">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" style="width: 100%;">
+          <mat-label>Usuario</mat-label>
+          <input matInput formControlName="username">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" style="width: 100%;">
+          <mat-label>Clave</mat-label>
+          <input matInput type="password" formControlName="password">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" style="width: 100%;">
+          <mat-label>Estado</mat-label>
+          <mat-select formControlName="estado">
+            <mat-option [value]="true">Activado</mat-option>
+            <mat-option [value]="false">Desactivado</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="!userForm.valid || submitted">
+          {{ isEditMode ? 'Actualizar' : 'Registrar' }}
+        </button>
+        <button mat-button type="button" (click)="goBack()" class="ms-2">Volver</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

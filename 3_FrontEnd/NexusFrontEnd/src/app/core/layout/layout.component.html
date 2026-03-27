@@ -1,0 +1,77 @@
+
+<div class="example-container">
+    <mat-toolbar color="primary" class="example-toolbar">
+        <button mat-icon-button (click)="sidenav.toggle()">
+            @if (!sidenav.opened) {
+                <mat-icon>menu</mat-icon>
+            }@else {
+                <mat-icon>close</mat-icon>
+            }            
+        </button>
+
+        <span>Sistema Nexus</span>
+
+        <span class="example-spacer"></span>
+
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item>
+                <mat-icon>account_box</mat-icon>
+                <span>{{ user?.username }}</span>
+            </button>
+            <button mat-menu-item (click)="sidenav.opened = false" (click)="logout()">
+                <mat-icon>exit_to_app</mat-icon>
+                <span>Cerrar Sesión</span>
+            </button>
+        </mat-menu>
+    </mat-toolbar>
+
+    <mat-sidenav-container class="example-sidenav-container">
+        <mat-sidenav #sidenav style="width: 250px" mode="over">
+            
+            <mat-divider></mat-divider>
+            <button class="myButton" [routerLinkActive]="['active']" mat-menu-item (click)="sidenav.toggle()"
+                routerLink="/dashboard" style="cursor: pointer">
+                <mat-icon>star_rate</mat-icon>
+                <span>Bienvenida</span>
+            </button>
+            <mat-divider></mat-divider>
+            
+            <button class="myButton" [routerLinkActive]="['active']" mat-menu-item (click)="sidenav.toggle()"
+                routerLink="/categories" style="cursor: pointer">
+                <mat-icon>search</mat-icon>
+                <span>Mant. Categoría</span>
+            </button>
+            <mat-divider></mat-divider>
+            
+            <button class="myButton" [routerLinkActive]="['active']" mat-menu-item (click)="sidenav.toggle()"
+                routerLink="/products" style="cursor: pointer">
+                <mat-icon>inventory</mat-icon>
+                <span>Mant. Productos</span>
+            </button>
+            <mat-divider></mat-divider>
+
+            <button class="myButton" [routerLinkActive]="['active']" mat-menu-item (click)="sidenav.toggle()"
+                routerLink="/users" style="cursor: pointer">
+                <mat-icon>group</mat-icon>
+                <span>Mant. Usuarios</span>
+            </button>
+            <mat-divider></mat-divider>
+
+            <button class="myButton" [routerLinkActive]="['active']" mat-menu-item (click)="sidenav.toggle()"
+                routerLink="/revenues" style="cursor: pointer">
+                <mat-icon>monetization_on</mat-icon>
+                <span>Reporte Ingresos</span>
+            </button>
+            
+        </mat-sidenav>
+
+        <mat-sidenav-content>
+            <router-outlet></router-outlet>
+        </mat-sidenav-content>
+
+    </mat-sidenav-container>
+</div>
