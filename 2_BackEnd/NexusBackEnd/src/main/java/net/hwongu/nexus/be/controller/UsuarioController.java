@@ -18,33 +18,22 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Controlador HTTP para la gestion de {@link Usuario}.
- * Maneja las peticiones para el recurso `/api/usuarios`, incluyendo operaciones
- * CRUD y autenticacion. Asegura que los datos sensibles como la contrasena no
- * sean expuestos en las respuestas, utilizando para ello el {@link UsuarioDTO}.
+ * Expone endpoints REST para usuarios.
  *
- * @author Henry Wong (hwongu@gmail.com)
+ * @author Henry Wong
+ * GitHub @hwongu
+ * https://github.com/hwongu
  */
 public class UsuarioController implements HttpHandler {
 
     private final UsuarioService usuarioService;
     private final Gson gson;
 
-    /**
-     * Constructor del controlador.
-     * Inicializa el servicio de usuarios y la instancia de Gson.
-     */
     public UsuarioController() {
         this.usuarioService = new UsuarioService(new UsuarioRepository());
         this.gson = new Gson();
     }
 
-    /**
-     * Maneja las peticiones HTTP entrantes para el recurso de usuarios.
-     *
-     * @param exchange El objeto {@link HttpExchange} que representa la peticion y la respuesta.
-     * @throws IOException Si ocurre un error de entrada/salida.
-     */
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         try {
@@ -66,7 +55,7 @@ public class UsuarioController implements HttpHandler {
                             statusCode = 404;
                             response = gson.toJson(Map.of("error", "Usuario no encontrado"));
                         }
-                    } else { // GET /api/usuarios
+                    } else {
                         List<Usuario> usuarios = usuarioService.listarUsuarios();
                         List<UsuarioDTO> dtos = usuarios.stream().map(this::toDTO).toList();
                         response = gson.toJson(dtos);
@@ -76,8 +65,8 @@ public class UsuarioController implements HttpHandler {
                 case "POST":
                     if ("/login".equals(path)) {
                         handleLogin(exchange);
-                        return; // El manejo de la respuesta se hace en handleLogin
-                    } else { // POST /api/usuarios (Crear)
+                        return;
+                    } else {
                         try (InputStreamReader reader = new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8)) {
                             Usuario usuario = gson.fromJson(reader, Usuario.class);
                             Usuario usuarioCreado = usuarioService.registrarUsuario(usuario);
@@ -87,7 +76,7 @@ public class UsuarioController implements HttpHandler {
                     }
                     break;
 
-                case "PUT": // PUT /api/usuarios/{id}
+                case "PUT":
                     if (path.matches("/\\d+")) {
                         Integer id = RutaHttpUtil.obtenerUltimoSegmentoComoEntero(path);
                         try (InputStreamReader reader = new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8)) {
@@ -102,7 +91,7 @@ public class UsuarioController implements HttpHandler {
                     }
                     break;
 
-                case "DELETE": // DELETE /api/usuarios/{id}
+                case "DELETE":
                     if (path.matches("/\\d+")) {
                         Integer id = RutaHttpUtil.obtenerUltimoSegmentoComoEntero(path);
                         usuarioService.eliminarUsuario(id);
@@ -130,7 +119,7 @@ public class UsuarioController implements HttpHandler {
             String errorResponse = gson.toJson(Map.of("error", e.getMessage()));
             byte[] responseBytes = errorResponse.getBytes(StandardCharsets.UTF_8);
             exchange.getResponseHeaders().set("Content-Type", "application/json");
-            exchange.sendResponseHeaders(409, responseBytes.length); // 409 Conflict
+            exchange.sendResponseHeaders(409, responseBytes.length);
             try (OutputStream os = exchange.getResponseBody()) {
                 os.write(responseBytes);
             }
@@ -144,18 +133,12 @@ public class UsuarioController implements HttpHandler {
         }
     }
 
-    /**
-     * Maneja especificamente la logica de autenticacion para el endpoint de login.
-     *
-     * @param exchange El objeto HttpExchange de la peticion.
-     * @throws IOException Si ocurre un error de entrada/salida.
-     */
     private void handleLogin(HttpExchange exchange) throws IOException {
         String response;
         int statusCode;
 
         try (InputStreamReader reader = new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8)) {
-            // Se usa un DTO especifico para el login para no exponer la entidad completa
+
             LoginRequest loginRequest = gson.fromJson(reader, LoginRequest.class);
             Usuario usuario = usuarioService.autenticarUsuario(loginRequest.getUsername(), loginRequest.getPassword());
 
@@ -163,7 +146,7 @@ public class UsuarioController implements HttpHandler {
                 statusCode = 200;
                 response = gson.toJson(toDTO(usuario));
             } else {
-                statusCode = 401; // Unauthorized
+                statusCode = 401;
                 response = gson.toJson(Map.of("error", "Credenciales invalidas"));
             }
         }
@@ -175,13 +158,6 @@ public class UsuarioController implements HttpHandler {
         }
     }
 
-    /**
-     * Convierte una entidad {@link Usuario} a su correspondiente {@link UsuarioDTO}.
-     * Este metodo es crucial para la seguridad, ya que omite la contrasena.
-     *
-     * @param usuario La entidad a convertir.
-     * @return El DTO resultante sin datos sensibles.
-     */
     private UsuarioDTO toDTO(Usuario usuario) {
         return new UsuarioDTO(
                 usuario.getIdUsuario(),
@@ -190,9 +166,6 @@ public class UsuarioController implements HttpHandler {
         );
     }
 
-    /**
-     * Clase interna estatica para mapear el cuerpo JSON de una solicitud de login.
-     */
     private static class LoginRequest {
         private String username;
         private String password;

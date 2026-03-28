@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Repositorio para la entidad {@link Producto}.
- * Implementa las operaciones CRUD para los productos, manejando la relación
- * con la entidad {@link Categoria} al leer los datos de la base de datos.
+ * Accede a datos de productos.
  *
- * @author Henry Wong (hwongu@gmail.com)
+ * @author Henry Wong
+ * GitHub @hwongu
+ * https://github.com/hwongu
  */
 public class ProductoRepository implements CrudRepository<Producto> {
 
@@ -30,7 +30,7 @@ public class ProductoRepository implements CrudRepository<Producto> {
                 ps.setDouble(3, producto.getPrecio());
                 ps.setInt(4, producto.getStock());
                 ps.executeUpdate();
-                
+
                 try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         producto.setIdProducto(generatedKeys.getInt(1));
@@ -94,11 +94,11 @@ public class ProductoRepository implements CrudRepository<Producto> {
             }
         } catch (SQLException e) {
             if (cn != null) cn.rollback();
-            // Verificamos el SQLState. '23503' es un código estándar para violación de clave foránea.
+
             if ("23503".equals(e.getSQLState())) {
                 throw new DataIntegrityViolationException("No se puede eliminar el producto porque está referenciado en un ingreso.", e);
             }
-            throw e; // Volvemos a lanzar otros errores de SQL.
+            throw e;
         } finally {
             if (cn != null && !cn.isClosed()) cn.close();
         }
@@ -108,7 +108,7 @@ public class ProductoRepository implements CrudRepository<Producto> {
     public List<Producto> listar() throws SQLException {
         List<Producto> productos = new ArrayList<>();
         String sql = """
-                SELECT p.id_producto, p.nombre, p.precio, p.stock, 
+                SELECT p.id_producto, p.nombre, p.precio, p.stock,
                        c.id_categoria, c.nombre as cat_nombre, c.descripcion as cat_desc
                 FROM producto p
                 INNER JOIN categoria c ON p.id_categoria = c.id_categoria
@@ -141,7 +141,7 @@ public class ProductoRepository implements CrudRepository<Producto> {
     @Override
     public Producto buscarPorId(Integer id) throws SQLException {
         String sql = """
-                SELECT p.id_producto, p.nombre, p.precio, p.stock, 
+                SELECT p.id_producto, p.nombre, p.precio, p.stock,
                        c.id_categoria, c.nombre as cat_nombre, c.descripcion as cat_desc
                 FROM producto p
                 INNER JOIN categoria c ON p.id_categoria = c.id_categoria

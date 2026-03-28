@@ -24,22 +24,17 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Controlador HTTP para la gestion de {@link Ingreso} y sus detalles.
- * Maneja operaciones complejas como el registro transaccional de un ingreso
- * y su anulacion. Procesa las peticiones para el recurso `/api/ingresos`.
+ * Expone endpoints REST para ingresos.
  *
- * @author Henry Wong (hwongu@gmail.com)
+ * @author Henry Wong
+ * GitHub @hwongu
+ * https://github.com/hwongu
  */
 public class IngresoController implements HttpHandler {
 
     private final IngresoService ingresoService;
     private final Gson gson;
 
-    /**
-     * Constructor del controlador.
-     * Inicializa el servicio de ingresos y una instancia de Gson configurada
-     * con un adaptador para manejar el tipo {@link LocalDateTime}.
-     */
     public IngresoController() {
         this.ingresoService = new IngresoService(new IngresoRepository());
         this.gson = new GsonBuilder()
@@ -47,12 +42,6 @@ public class IngresoController implements HttpHandler {
                 .create();
     }
 
-    /**
-     * Maneja las peticiones HTTP entrantes para el recurso de ingresos.
-     *
-     * @param exchange El objeto {@link HttpExchange} que representa la peticion y la respuesta.
-     * @throws IOException Si ocurre un error de entrada/salida.
-     */
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         try {
@@ -70,14 +59,14 @@ public class IngresoController implements HttpHandler {
                         List<DetalleIngreso> detalles = ingresoService.buscarDetallesPorIngreso(id);
                         List<DetalleIngresoDTO> dtos = detalles.stream().map(this::toDetalleDTO).toList();
                         response = gson.toJson(dtos);
-                    } else { // GET /api/ingresos
+                    } else {
                         List<Ingreso> ingresos = ingresoService.listarIngresos();
                         List<IngresoDTO> dtos = ingresos.stream().map(this::toIngresoDTO).toList();
                         response = gson.toJson(dtos);
                     }
                     break;
 
-                case "POST": // POST /api/ingresos
+                case "POST":
                     try (InputStreamReader reader = new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8)) {
                         IngresoConDetallesRequest request = gson.fromJson(reader, IngresoConDetallesRequest.class);
                         Ingreso ingreso = toIngresoEntity(request.getIngreso());
@@ -89,7 +78,7 @@ public class IngresoController implements HttpHandler {
                     }
                     break;
 
-                case "PUT": // PUT /api/ingresos/{id}/estado
+                case "PUT":
                     if (path.matches("/\\d+/estado")) {
                         Integer id = RutaHttpUtil.obtenerPrimerSegmentoComoEntero(path);
                         try (InputStreamReader reader = new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8)) {
@@ -110,7 +99,7 @@ public class IngresoController implements HttpHandler {
                     }
                     break;
 
-                case "DELETE": // DELETE /api/ingresos/{id}
+                case "DELETE":
                     if (path.matches("/\\d+")) {
                         Integer id = RutaHttpUtil.obtenerUltimoSegmentoComoEntero(path);
                         ingresoService.anularIngreso(id);
@@ -144,31 +133,15 @@ public class IngresoController implements HttpHandler {
         }
     }
 
-    /**
-     * Clase interna estatica para mapear el cuerpo JSON de una solicitud de creacion de ingreso.
-     */
     private static class IngresoConDetallesRequest {
         private IngresoDTO ingreso;
         private List<DetalleIngresoDTO> detalles;
 
-        /**
-         * Obtiene el DTO de la cabecera del ingreso.
-         * @return El DTO del ingreso.
-         */
         public IngresoDTO getIngreso() { return ingreso; }
 
-        /**
-         * Obtiene la lista de DTOs de los detalles del ingreso.
-         * @return La lista de detalles.
-         */
         public List<DetalleIngresoDTO> getDetalles() { return detalles; }
     }
 
-    /**
-     * Convierte una entidad {@link Ingreso} a su correspondiente {@link IngresoDTO}.
-     * @param ingreso La entidad a convertir.
-     * @return El DTO resultante.
-     */
     private IngresoDTO toIngresoDTO(Ingreso ingreso) {
         return new IngresoDTO(
                 ingreso.getIdIngreso(),
@@ -179,11 +152,6 @@ public class IngresoController implements HttpHandler {
         );
     }
 
-    /**
-     * Convierte una entidad {@link DetalleIngreso} a su correspondiente {@link DetalleIngresoDTO}.
-     * @param detalle La entidad a convertir.
-     * @return El DTO resultante.
-     */
     private DetalleIngresoDTO toDetalleDTO(DetalleIngreso detalle) {
         return new DetalleIngresoDTO(
                 detalle.getIdDetalle(),
@@ -195,11 +163,6 @@ public class IngresoController implements HttpHandler {
         );
     }
 
-    /**
-     * Convierte un {@link IngresoDTO} a una entidad {@link Ingreso}.
-     * @param dto El DTO a convertir.
-     * @return La entidad resultante.
-     */
     private Ingreso toIngresoEntity(IngresoDTO dto) {
         Ingreso ingreso = new Ingreso();
         ingreso.setUsuario(new Usuario(dto.getIdUsuario()));
@@ -208,11 +171,6 @@ public class IngresoController implements HttpHandler {
         return ingreso;
     }
 
-    /**
-     * Convierte un {@link DetalleIngresoDTO} a una entidad {@link DetalleIngreso}.
-     * @param dto El DTO a convertir.
-     * @return La entidad resultante.
-     */
     private DetalleIngreso toDetalleEntity(DetalleIngresoDTO dto) {
         DetalleIngreso detalle = new DetalleIngreso();
         detalle.setProducto(new Producto(dto.getIdProducto()));

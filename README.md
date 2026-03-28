@@ -10,7 +10,7 @@ El sistema implementa:
 
 ## 📁 Estructura del Repositorio
 
-El proyecto está dividido en cuatro grandes módulos principales:
+El proyecto está dividido en cinco grandes módulos principales:
 
 ### 🗄️ 1_DataBase (Persistencia)
 Contiene la infraestructura de datos dockerizada y los scripts de inicialización.
@@ -28,6 +28,10 @@ Contiene la aplicación cliente con la que interactúan los usuarios finales.
 Contiene los directorios de destino donde se unifican los artefactos compilados para levantar toda la infraestructura del sistema.
 * **deploy:** Carpeta de destino para el ejecutable del backend.
 * **frontend:** Carpeta de destino para los archivos estáticos compilados del frontend.
+
+### 🧪 5_Test (Pruebas de API)
+Contiene las colecciones y entornos preconfigurados para validar los endpoints del backend de manera independiente.
+* **Postman:** Directorio que aloja los archivos JSON exportados listos para ser importados en tu cliente HTTP.
 
 ---
 
@@ -76,10 +80,24 @@ Preparamos la interfaz de usuario para producción.
 
 ---
 
+## 🧪 Pruebas del API con Postman
+
+Para facilitar la validación del backend sin depender del frontend, se han incluido scripts de prueba parametrizados.
+
+1. Navega a la ruta: `5_Test\Postman`.
+2. Abre tu herramienta **Postman** (o Insomnia).
+3. Utiliza la opción **Import** y arrastra los dos archivos incluidos:
+   * `NexusMonolitico.postman_collection.json` (Contiene todas las peticiones organizadas en carpetas).
+   * `NexusMonolitico_Enviroment.postman_environment.json` (Contiene las variables dinámicas del entorno).
+4. **¡Muy importante!** En la esquina superior derecha de Postman, asegúrate de hacer clic en el menú desplegable de entornos y **seleccionar `NexusMonolitico_Enviroment`**.
+5. Ahora puedes ejecutar cualquier petición y la variable `{{baseUrl}}` apuntará automáticamente a tu servidor local.
+
+---
+
 ## 🛠️ Stack Tecnológico
 
 * **Backend:** Java 21 (Nativo), HttpServer, JDBC, Gson
-* **Testing:** JUnit 5, Mockito
+* **Testing:** JUnit 5, Mockito, Postman (API Testing)
 * **Gestor de Dependencias:** Maven
 * **Frontend:** Angular 19
 * **Base de Datos:** PostgreSQL 18
@@ -88,7 +106,7 @@ Preparamos la interfaz de usuario para producción.
 ---
 
 **Autor:** [Henry Wong](https://github.com/hwongu)  
-*Docente Universitario*
+
 
 ---
 
@@ -97,3 +115,4 @@ Preparamos la interfaz de usuario para producción.
 ![Angular](https://img.shields.io/badge/Angular-19-DD0031?style=for-the-badge&logo=angular)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18-336791?style=for-the-badge&logo=postgresql)
 ![Docker](https://img.shields.io/badge/Docker-Compose-blue?style=for-the-badge&logo=docker)
+![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)
