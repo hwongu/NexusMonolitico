@@ -10,24 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Repositorio para la gestión de las entidades {@link Ingreso} y {@link DetalleIngreso}.
- * Esta clase maneja operaciones complejas y transaccionales que involucran
- * múltiples tablas, como el registro completo de un ingreso y su anulación.
+ * Accede a datos de ingresos y sus detalles.
  *
- * @author Henry Wong (hwongu@gmail.com)
+ * @author Henry Wong
+ * GitHub @hwongu
+ * https://github.com/hwongu
  */
 public class IngresoRepository {
 
-    /**
-     * Registra un ingreso completo de forma transaccional.
-     * Inserta la cabecera del ingreso, sus detalles, y actualiza el stock
-     * de los productos correspondientes. Si alguna operación falla, se
-     * revierte toda la transacción.
-     *
-     * @param ingreso El objeto {@link Ingreso} con los datos de la cabecera.
-     * @param detalles Una lista de {@link DetalleIngreso} con los productos a ingresar.
-     * @throws SQLException Si ocurre un error de acceso a la base de datos.
-     */
     public void registrarIngresoCompleto(Ingreso ingreso, List<DetalleIngreso> detalles) throws SQLException {
         Connection cn = ConexionDB.getInstancia();
         String sqlIngreso = "INSERT INTO ingreso (id_usuario, fecha_ingreso, estado) VALUES (?, ?, ?)";
@@ -73,19 +63,13 @@ public class IngresoRepository {
         }
     }
 
-    /**
-     * Lista todos los ingresos registrados, incluyendo datos del usuario que lo realizó.
-     *
-     * @return Una lista de objetos {@link Ingreso}.
-     * @throws SQLException Si ocurre un error de acceso a la base de datos.
-     */
     public List<Ingreso> listar() throws SQLException {
         List<Ingreso> ingresos = new ArrayList<>();
         String sql = """
-            SELECT i.id_ingreso, i.fecha_ingreso, i.estado, 
-                   u.id_usuario, u.username 
-            FROM ingreso i 
-            INNER JOIN usuario u ON i.id_usuario = u.id_usuario 
+            SELECT i.id_ingreso, i.fecha_ingreso, i.estado,
+                   u.id_usuario, u.username
+            FROM ingreso i
+            INNER JOIN usuario u ON i.id_usuario = u.id_usuario
             ORDER BY i.id_ingreso DESC
             """;
 
@@ -110,17 +94,10 @@ public class IngresoRepository {
         return ingresos;
     }
 
-    /**
-     * Busca y recupera todos los detalles asociados a un ingreso específico.
-     *
-     * @param idIngreso El ID del ingreso del cual se quieren obtener los detalles.
-     * @return Una lista de objetos {@link DetalleIngreso}.
-     * @throws SQLException Si ocurre un error de acceso a la base de datos.
-     */
     public List<DetalleIngreso> buscarDetallesPorIngreso(Integer idIngreso) throws SQLException {
         List<DetalleIngreso> detalles = new ArrayList<>();
         String sql = """
-            SELECT d.id_detalle, d.cantidad, d.precio_compra, 
+            SELECT d.id_detalle, d.cantidad, d.precio_compra,
                    p.id_producto, p.nombre as prod_nombre
             FROM detalle_ingreso d
             INNER JOIN producto p ON d.id_producto = p.id_producto
@@ -150,14 +127,6 @@ public class IngresoRepository {
         return detalles;
     }
 
-    /**
-     * Anula un ingreso de forma transaccional.
-     * Cambia el estado del ingreso a 'ANULADO' y revierte el stock de los
-     * productos involucrados, restando las cantidades que se habían sumado.
-     *
-     * @param idIngreso El ID del ingreso a anular.
-     * @throws SQLException Si ocurre un error de acceso a la base de datos o si el ingreso no se encuentra.
-     */
     public void anularIngreso(Integer idIngreso) throws SQLException {
         Connection cn = ConexionDB.getInstancia();
         String sqlAnular = "UPDATE ingreso SET estado = 'ANULADO' WHERE id_ingreso = ?";
@@ -214,13 +183,6 @@ public class IngresoRepository {
         }
     }
 
-    /**
-     * Actualiza el estado de un ingreso específico.
-     *
-     * @param idIngreso El ID del ingreso a actualizar.
-     * @param nuevoEstado El nuevo estado para el ingreso.
-     * @throws SQLException Si ocurre un error de acceso a la base de datos o si el ingreso no se encuentra.
-     */
     public void actualizarEstado(Integer idIngreso, String nuevoEstado) throws SQLException {
         String sql = "UPDATE ingreso SET estado = ? WHERE id_ingreso = ?";
         Connection cn = ConexionDB.getInstancia();
@@ -237,6 +199,5 @@ public class IngresoRepository {
             }
         }
     }
-
 
 }

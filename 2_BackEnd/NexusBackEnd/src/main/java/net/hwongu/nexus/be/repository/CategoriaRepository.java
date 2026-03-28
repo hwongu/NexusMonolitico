@@ -9,12 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Repositorio para la entidad {@link Categoria}.
- * Implementa la interfaz {@link CrudRepository} para proporcionar la lógica
- * de acceso a datos específica para las categorías, manejando las operaciones
- * CRUD directamente contra la base de datos.
+ * Accede a datos de categorias.
  *
- * @author Henry Wong (hwongu@gmail.com)
+ * @author Henry Wong
+ * GitHub @hwongu
+ * https://github.com/hwongu
  */
 public class CategoriaRepository implements CrudRepository<Categoria> {
 
@@ -90,11 +89,11 @@ public class CategoriaRepository implements CrudRepository<Categoria> {
             }
         } catch (SQLException e) {
             if (cn != null) cn.rollback();
-            // Verificamos el SQLState. '23503' es un código estándar para violación de clave foránea.
+
             if ("23503".equals(e.getSQLState())) {
                 throw new DataIntegrityViolationException("No se puede eliminar la categoría porque tiene productos asociados.", e);
             }
-            throw e; // Volvemos a lanzar otros errores de SQL.
+            throw e;
         } finally {
             if (cn != null && !cn.isClosed()) cn.close();
         }

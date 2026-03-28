@@ -19,33 +19,22 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Controlador HTTP para la gestion de {@link Producto}.
- * Procesa las peticiones para el recurso `/api/productos`, interactuando con
- * {@link ProductoService} y manejando la conversion entre la entidad Producto
- * y su DTO correspondiente para las respuestas.
+ * Expone endpoints REST para productos.
  *
- * @author Henry Wong (hwongu@gmail.com)
+ * @author Henry Wong
+ * GitHub @hwongu
+ * https://github.com/hwongu
  */
 public class ProductoController implements HttpHandler {
 
     private final ProductoService productoService;
     private final Gson gson;
 
-    /**
-     * Constructor del controlador.
-     * Inicializa el servicio de productos y la instancia de Gson.
-     */
     public ProductoController() {
         this.productoService = new ProductoService(new ProductoRepository());
         this.gson = new Gson();
     }
 
-    /**
-     * Maneja las peticiones HTTP entrantes para el recurso de productos.
-     *
-     * @param exchange El objeto {@link HttpExchange} que representa la peticion y la respuesta.
-     * @throws IOException Si ocurre un error de entrada/salida.
-     */
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         try {
@@ -67,14 +56,14 @@ public class ProductoController implements HttpHandler {
                             statusCode = 404;
                             response = gson.toJson(Map.of("error", "Producto no encontrado"));
                         }
-                    } else { // GET /api/productos
+                    } else {
                         List<Producto> productos = productoService.listarProductos();
                         List<ProductoDTO> dtos = productos.stream().map(this::toDTO).toList();
                         response = gson.toJson(dtos);
                     }
                     break;
 
-                case "POST": // POST /api/productos
+                case "POST":
                     try (InputStreamReader reader = new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8)) {
                         ProductoDTO dto = gson.fromJson(reader, ProductoDTO.class);
                         Producto producto = toEntity(dto);
@@ -84,7 +73,7 @@ public class ProductoController implements HttpHandler {
                     }
                     break;
 
-                case "PUT": // PUT /api/productos/{id}
+                case "PUT":
                     if (path.matches("/\\d+")) {
                         Integer id = RutaHttpUtil.obtenerUltimoSegmentoComoEntero(path);
                         try (InputStreamReader reader = new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8)) {
@@ -100,7 +89,7 @@ public class ProductoController implements HttpHandler {
                     }
                     break;
 
-                case "DELETE": // DELETE /api/productos/{id}
+                case "DELETE":
                     if (path.matches("/\\d+")) {
                         Integer id = RutaHttpUtil.obtenerUltimoSegmentoComoEntero(path);
                         productoService.eliminarProducto(id);
@@ -128,7 +117,7 @@ public class ProductoController implements HttpHandler {
             String errorResponse = gson.toJson(Map.of("error", e.getMessage()));
             byte[] responseBytes = errorResponse.getBytes(StandardCharsets.UTF_8);
             exchange.getResponseHeaders().set("Content-Type", "application/json");
-            exchange.sendResponseHeaders(409, responseBytes.length); // 409 Conflict
+            exchange.sendResponseHeaders(409, responseBytes.length);
             try (OutputStream os = exchange.getResponseBody()) {
                 os.write(responseBytes);
             }
@@ -142,11 +131,6 @@ public class ProductoController implements HttpHandler {
         }
     }
 
-    /**
-     * Convierte una entidad {@link Producto} a su correspondiente {@link ProductoDTO}.
-     * @param producto La entidad a convertir.
-     * @return El DTO resultante.
-     */
     private ProductoDTO toDTO(Producto producto) {
         return new ProductoDTO(
                 producto.getIdProducto(),
@@ -158,11 +142,6 @@ public class ProductoController implements HttpHandler {
         );
     }
 
-    /**
-     * Convierte un {@link ProductoDTO} a una entidad {@link Producto}.
-     * @param dto El DTO a convertir.
-     * @return La entidad resultante.
-     */
     private Producto toEntity(ProductoDTO dto) {
         Categoria categoria = new Categoria(dto.getIdCategoria());
         return new Producto(
