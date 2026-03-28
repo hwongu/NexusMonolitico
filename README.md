@@ -1,6 +1,6 @@
-# 🚀 Proyecto Nexus – Sistema de Gestión de Almacén (Proyecto Académico)
+# 🧾 Proyecto Nexus – Sistema de Gestión de Almacén (Arquitectura Monolítica)
 
-Este repositorio contiene el código fuente, la configuración de la base de datos y la infraestructura para el sistema **Nexus**. Este proyecto ha sido diseñado como material educativo y de ejemplo para clases universitarias, demostrando cómo construir una aplicación completa (Full-Stack) utilizando tecnologías puras y estándares de la industria, sin depender inicialmente de frameworks pesados en el backend.
+Este repositorio contiene el código fuente, la configuración de la base de datos y la infraestructura para el sistema **Nexus** en su versión de una **Arquitectura Monolítica**. Este proyecto ha sido diseñado como material educativo y de ejemplo para clases universitarias, demostrando cómo construir una aplicación completa (Full-Stack) utilizando tecnologías puras y estándares de la industria, sin depender inicialmente de frameworks pesados en el backend.
 
 El sistema implementa:
 * **Mantenimientos (CRUD):** Usuarios, Productos y Categorías.
@@ -39,8 +39,9 @@ Contiene las colecciones y entornos preconfigurados para validar los endpoints d
 
 Para garantizar que el entorno local funcione correctamente, el orden de ejecución es fundamental:
 
-1.  **La Base de Datos manda:** El contenedor de la base de datos es el corazón del sistema. **Siempre debe estar encendido primero** antes de intentar levantar o probar el backend.
-2.  **Construcción independiente:** Asegúrate de compilar el backend (generando el `.jar`) y el frontend (generando el directorio `dist`) antes de intentar un despliegue completo en la carpeta de infraestructura.
+1.  **La Base de Datos manda:** El contenedor de la base de datos debe estar encendido antes de intentar levantar o probar el monolítico individualmente desde tu IDE.
+2.  **Aislamiento de Entornos:** No puedes tener levantada la base de datos de la carpeta `1_DataBase` al mismo tiempo que intentas levantar toda la infraestructura desde `4_Infraestructure`, ya que habrá colisión de puertos.
+3.  **Construcción independiente:** Asegúrate de compilar el backend (generando el `.jar`) y el frontend (generando el directorio `dist`) antes de intentar un despliegue completo en la carpeta de infraestructura.
 
 ---
 
@@ -105,8 +106,22 @@ Para facilitar la validación del backend sin depender del frontend, se han incl
 
 ---
 
+## 👤 Autor
 **Autor:** [Henry Wong](https://github.com/hwongu)  
 
+---
+
+## 📜 Licencia
+
+Este proyecto está protegido por copyright © 2026 **Henry Wong**.  
+Está permitido su uso únicamente con fines **educativos y académicos** en el marco de cursos universitarios.  
+**Queda prohibido su uso en entornos de producción o con fines comerciales.**
+
+---
+
+## ⚠️ Nota
+
+Este repositorio es un recurso de ejemplo para prácticas en clase. No está optimizado para ambientes reales ni cumple con todas las medidas de seguridad y escalabilidad requeridas en aplicaciones comerciales.
 
 ---
 
