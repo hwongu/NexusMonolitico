@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Repositorio para la entidad {@link Usuario}.
- * Proporciona una implementación de {@link CrudRepository} para gestionar
- * la persistencia de los objetos Usuario en la base de datos.
+ * Accede a datos de usuarios.
  *
- * @author Henry Wong (hwongu@gmail.com)
+ * @author Henry Wong
+ * GitHub @hwongu
+ * https://github.com/hwongu
  */
 public class UsuarioRepository implements CrudRepository<Usuario> {
 
@@ -91,11 +91,11 @@ public class UsuarioRepository implements CrudRepository<Usuario> {
             }
         } catch (SQLException e) {
             if (cn != null) cn.rollback();
-            // Verificamos el SQLState. '23503' es un código estándar para violación de clave foránea.
+
             if ("23503".equals(e.getSQLState())) {
                 throw new DataIntegrityViolationException("No se puede eliminar el usuario porque tiene ingresos registrados a su nombre.", e);
             }
-            throw e; // Volvemos a lanzar otros errores de SQL.
+            throw e;
         } finally {
             if (cn != null && !cn.isClosed()) cn.close();
         }
@@ -145,15 +145,6 @@ public class UsuarioRepository implements CrudRepository<Usuario> {
         return usuario;
     }
 
-    /**
-     * Busca un usuario por su nombre de usuario y contraseña.
-     * Este método se utiliza para la autenticación de usuarios.
-     *
-     * @param username El nombre de usuario.
-     * @param password La contraseña del usuario.
-     * @return Un objeto {@link Usuario} si las credenciales son correctas, de lo contrario, {@code null}.
-     * @throws SQLException Si ocurre un error de acceso a la base de datos.
-     */
     public Usuario buscarPorCredenciales(String username, String password) throws SQLException {
         String sql = "SELECT id_usuario, username, password, estado FROM usuario WHERE username = ? AND password = ? and estado = true";
         Connection cn = ConexionDB.getInstancia();

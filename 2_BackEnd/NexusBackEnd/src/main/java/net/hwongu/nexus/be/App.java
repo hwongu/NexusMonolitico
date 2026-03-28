@@ -14,23 +14,14 @@ import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
 
 /**
- * Punto de Entrada Principal de la Aplicación (NexusBackEnd).
- * Esta clase es la responsable de inicializar y configurar el servidor HTTP
- * nativo de Java. Actúa como el motor central que lee la configuración,
- * establece los contextos de enrutamiento para cada controlador, aplica los
- * filtros necesarios y arranca el servidor para escuchar las peticiones entrantes.
+ * Inicia el microservicio NexusBackEnd.
  *
- * @author Henry Wong (hwongu@gmail.com)
+ * @author Henry Wong
+ * GitHub @hwongu
+ * https://github.com/hwongu
  */
 public class App {
 
-    /**
-     * Método principal que arranca la aplicación.
-     * Configura y lanza el servidor HTTP, gestionando las excepciones críticas
-     * que puedan ocurrir durante el proceso de arranque.
-     *
-     * @param args Argumentos de la línea de comandos (no utilizados).
-     */
     public static void main(String[] args) {
         try {
             int serverPort = ConfiguracionApp.obtenerEntero("server.port");
@@ -41,7 +32,6 @@ public class App {
 
             HttpServer server = HttpServer.create(new InetSocketAddress(serverPort), 0);
 
-            // Se crea una instancia del filtro CORS que será compartida por todos los contextos.
             CorsFilter corsFilter = new CorsFilter();
 
             HttpContext categoriaContext = server.createContext(contextPath + "/categorias", new CategoriaController());
@@ -56,18 +46,16 @@ public class App {
             HttpContext ingresoContext = server.createContext(contextPath + "/ingresos", new IngresoController());
             ingresoContext.getFilters().add(corsFilter);
 
-            // Configuración del gestor de concurrencia.
             server.setExecutor(Executors.newCachedThreadPool());
 
-            // Arranque del servidor.
             server.start();
             System.out.println("Servidor Nexus iniciado con exito.");
             System.out.println("Escuchando en el puerto: " + serverPort);
             System.out.println("Presione Ctrl+C para detener el servidor.");
-            //Apagado del servidor
+
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 System.out.println("Iniciando secuencia de apagado del servidor...");
-                server.stop(2); // Tiempo de gracia de 2 segundos.
+                server.stop(2);
                 System.out.println("Servidor detenido.");
             }));
 
